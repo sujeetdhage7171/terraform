@@ -1,3 +1,3 @@
 # terraform
-k8s in codespace
+Deploy EKS in AWS with Terraform
 
