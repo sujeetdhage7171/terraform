@@ -1,0 +1,62 @@
+name: Deploy EKS with Terraform
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy (dev, stage, prod)'
+        required: true
+        type: choice
+        options:
+          - dev
+
+      action:
+        description: 'Terraform action to perform'
+        required: true
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
+
+jobs:
+  terraform:
+    name: Deploy EKS
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: infra/eks   # 👈 change this to your EKS folder
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::555488808142:role/FULL-ACCESS-ADMIN-ROLE
+          aws-region: ap-south-1   # 👈 update to your region
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.7
+
+      - name: Terraform Init
+        run: terraform init -backend-config="key=eks/${{ github.event.inputs.environment }}.tfstate"
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        if: ${{ github.event.inputs.action == 'plan' }}
+        run: terraform plan -var="env=${{ github.event.inputs.environment }}"
+
+      - name: Terraform Apply
+        if: ${{ github.event.inputs.action == 'apply' }}
+        run: terraform apply -auto-approve -var="env=${{ github.event.inputs.environment }}"
+
+      - name: Terraform Destroy
+        if: ${{ github.event.inputs.action == 'destroy' }}
+        run: terraform destroy -auto-approve -var="env=${{ github.event.inputs.environment }}"

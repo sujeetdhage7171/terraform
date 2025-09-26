@@ -1,28 +1,44 @@
-variable "project_id" {
-  description = "The GCP project ID"
-  type        = string
-}
-
 variable "region" {
-  description = "The GCP region"
+  description = "The AWS region to deploy the EKS cluster into"
   type        = string
-  default     = "us-central1"
+  default     = "ap-south-1"
 }
 
 variable "cluster_name" {
-  description = "Name of the GKE cluster"
+  description = "Name of the EKS cluster"
   type        = string
-  default     = "demo-gke-cluster"
+  default     = "eks-cluster-1"
 }
 
 variable "node_count" {
-  description = "Number of nodes in the default node pool"
+  description = "Number of worker nodes in the node group"
   type        = number
-  default     = 1
+  default     = 2
 }
 
 variable "node_machine_type" {
-  description = "Machine type for the GKE nodes"
+  description = "EC2 instance type for worker nodes"
   type        = string
-  default     = "e2-medium"
+  default     = "t3.medium"
 }
+
+variable "vpc_id" {
+  description = "The VPC ID where the EKS cluster will be deployed"
+  type        = string
+}
+
+variable "public_subnet_ids" {
+  description = "List of public subnet IDs for the EKS worker nodes"
+  type        = list(string)
+}
+
+variable "eks_cluster_role_arn" {
+  description = "IAM role ARN for the EKS cluster"
+  type        = string
+}
+
+variable "eks_node_role_arn" {
+  description = "IAM role ARN for the EKS node group"
+  type        = string
+}
+
