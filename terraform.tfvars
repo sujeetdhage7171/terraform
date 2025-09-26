@@ -1,4 +1,4 @@
-region               = "ap-south-1"
+region               = "us-east-1"
 cluster_name         = "eks-cluster-1"
 node_count           = 2
 node_machine_type    = "t3.medium"

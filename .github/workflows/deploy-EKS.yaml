@@ -24,6 +24,10 @@ jobs:
     name: Deploy EKS
     runs-on: ubuntu-latest
 
+    permissions:
+      id-token: write   # 👈 REQUIRED for OIDC
+      contents: read    # 👈 allow checkout
+      
     defaults:
       run:
         working-directory: infra/eks   # 👈 change this to your EKS folder
@@ -36,7 +40,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::555488808142:role/FULL-ACCESS-ADMIN-ROLE
-          aws-region: ap-south-1   # 👈 update to your region
+          aws-region: us-east-1   # 👈 update to your region
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
