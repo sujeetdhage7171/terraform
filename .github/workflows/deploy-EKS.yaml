@@ -30,7 +30,7 @@ jobs:
       
     defaults:
       run:
-        working-directory: infra/eks   # 👈 change this to your EKS folder
+        working-directory: .   # 👈 change this to your EKS folder
 
     steps:
       - name: Checkout repository
