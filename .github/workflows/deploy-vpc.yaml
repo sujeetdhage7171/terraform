@@ -1,0 +1,42 @@
+name: Deploy Minimal VPC
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Terraform action (plan/apply/destroy)"
+        required: true
+        default: "plan"
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
+
+permissions:
+  id-token: write   # needed for OIDC to AWS
+  contents: read
+
+jobs:
+  vpc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::555488808142:role/FULL-ACCESS-ADMIN-ROLE
+          aws-region: us-east-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        working-directory: infra/networking
+        run: terraform init -input=false
+
+      - name: Terraform ${{ github.event.inputs.action }}
+        working-directory: infra/networking
+        run: terraform ${{ github.event.inputs.action }} -auto-approve
