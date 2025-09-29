@@ -39,4 +39,4 @@ jobs:
 
       - name: Terraform ${{ github.event.inputs.action }}
         working-directory: infra/networking
-        run: terraform ${{ github.event.inputs.action }} -auto-approve
+        run: terraform ${{ github.event.inputs.action }}
