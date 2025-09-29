@@ -1,11 +1,11 @@
 output "cluster_name" {
-  value = google_container_cluster.primary.name
+  value = aws_eks_cluster.this.name
 }
 
 output "kubernetes_endpoint" {
-  value = google_container_cluster.primary.endpoint
+  value = aws_eks_cluster.this.endpoint
 }
 
-output "node_pool_name" {
-  value = google_container_node_pool.primary_nodes.name
+output "node_group_name" {
+  value = aws_eks_node_group.this.node_group_name
 }
