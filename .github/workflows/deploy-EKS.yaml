@@ -55,7 +55,7 @@ jobs:
 
       - name: Terraform Plan
         if: ${{ github.event.inputs.action == 'plan' }}
-        run: terraform plan -var="env=${{ github.event.inputs.environment }}"
+        run: terraform plan -var='public_subnet_ids=["subnet-12345","subnet-67890"]' -var="env=dev"
 
       - name: Terraform Apply
         if: ${{ github.event.inputs.action == 'apply' }}
