@@ -35,7 +35,7 @@ jobs:
 
       - name: Terraform Init
         working-directory: infra/networking
-        run: terraform init -input=false
+        run: terraform init -reconfigure -input=false
 
       - name: Terraform ${{ github.event.inputs.action }}
         working-directory: infra/networking
