@@ -21,3 +21,4 @@ output "all_subnet_ids" {
   # Concatenate the lists using the correct resource names
   value       = concat(aws_subnet.public[*].id, aws_subnet.private[*].id)
 }
+
