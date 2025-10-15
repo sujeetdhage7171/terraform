@@ -53,7 +53,6 @@ resource "aws_subnet" "public" {
 # Elastic IP for the NAT Gateway
 resource "aws_eip" "nat_eip" {
   count = length(var.public_subnet_cidrs)
-  vpc   = true
 }
 
 # NAT Gateway placed in the Public Subnets
