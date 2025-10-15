@@ -1,0 +1,52 @@
+name: Deploy EKS Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Terraform action (plan/apply/destroy)"
+        required: true
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
+      # Removed 'env' input since it is not used in your S3 state path
+
+permissions:
+  id-token: write   # needed for OIDC auth
+  contents: read
+
+jobs:
+  eks:
+    name: EKS Cluster Deployment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::555488808142:role/FULL-ACCESS-ADMIN-ROLE
+          aws-region: us-east-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        working-directory: infra/eks
+        # We only need to initialize the EKS module
+        run: terraform init -input=false
+
+      - name: Terraform ${{ github.event.inputs.action }}
+        working-directory: infra/eks
+        run: |
+          # Pass all necessary EKS module configuration variables
+          terraform ${{ github.event.inputs.action }} -auto-approve \
+            -var="region=us-east-1" \
+            -var="cluster_name=eks-cluster-1" \
+            -var="node_count=2" \
+            -var="node_machine_type=t3.medium" \
+            -var="eks_cluster_role_arn=arn:aws:iam::555488808142:role/eks_cluster_role" \
+            -var="eks_node_role_arn=arn:aws:iam::555488808142:role/eks_node_role"

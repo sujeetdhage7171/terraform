@@ -1,44 +1,49 @@
-variable "region" {
-  description = "The AWS region to deploy the EKS cluster into"
-  type        = string
-  default     = "us-east-1"
-}
-
-variable "cluster_name" {
-  description = "Name of the EKS cluster"
-  type        = string
-  default     = "eks-cluster-1"
-}
-
-variable "node_count" {
-  description = "Number of worker nodes in the node group"
-  type        = number
-  default     = 2
-}
-
-variable "node_machine_type" {
-  description = "EC2 instance type for worker nodes"
-  type        = string
-  default     = "t3.medium"
-}
-
+# --- Network Inputs (REQUIRED from the networking module) ---
+# Assuming you will pass these from a root module or use data lookups
 variable "vpc_id" {
-  description = "The VPC ID where the EKS cluster will be deployed"
+  description = "The ID of the VPC created by the networking module."
   type        = string
 }
 
-variable "public_subnet_ids" {
-  description = "List of public subnet IDs for the EKS worker nodes"
+variable "private_subnet_ids" {
+  description = "List of private subnet IDs for EKS worker nodes."
   type        = list(string)
 }
 
+# --- EKS Configuration Variables ---
+
+variable "region" {
+  description = "The AWS region to deploy resources into."
+  type        = string
+}
+
+variable "cluster_name" {
+  description = "Name of the EKS cluster."
+  type        = string
+}
+
+variable "node_machine_type" {
+  description = "The EC2 instance type for the EKS worker nodes."
+  type        = string
+}
+
+variable "node_count" {
+  description = "The initial number of worker nodes."
+  type        = number
+}
+
 variable "eks_cluster_role_arn" {
-  description = "IAM role ARN for the EKS cluster"
+  description = "ARN of the IAM role for the EKS Control Plane."
   type        = string
 }
 
 variable "eks_node_role_arn" {
-  description = "IAM role ARN for the EKS node group"
+  description = "ARN of the IAM role for the EKS Worker Nodes."
   type        = string
 }
 
+variable "cluster_version" {
+  description = "Kubernetes cluster version."
+  type        = string
+  default     = "1.32"
+}
