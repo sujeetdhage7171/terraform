@@ -21,7 +21,7 @@ variable "region" {
   type        = string
 }
 
-variable "EKS-plane" {
+variable "eks_worker_plane" {
   description = "Name of the EKS cluster."
   type        = string
 }
