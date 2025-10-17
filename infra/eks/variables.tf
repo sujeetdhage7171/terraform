@@ -23,7 +23,7 @@ variable "region" {
   default     = "us-east-1"
 }
 
-variable "eks_worker_plane" {
+variable "cluster_name" {
   description = "Name of the EKS cluster."
   type        = string
   default     = "eks-cluster-1"
