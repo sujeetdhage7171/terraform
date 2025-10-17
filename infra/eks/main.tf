@@ -74,13 +74,13 @@ data "aws_eks_cluster_auth" "this" {
   name = aws_eks_cluster.this.name
 }
 # Define the remote state configuration for the networking module
-data "terraform_remote_state" "networking" {
-  backend = "s3"
-  config = {
-    # CRITICAL: Replace YOUR-TERRAFORM-STATE-BUCKET-NAME with your actual S3 bucket name
-    bucket = "s3bucket-for-statefile"
-    # Use the static key path for the networking state file
-    key    = "infra/networking/terraform.tfstate"
-    region = "us-east-1"
-  }
-}
+# data "terraform_remote_state" "networking" {
+#   backend = "s3"
+#   config = {
+#     # CRITICAL: Replace YOUR-TERRAFORM-STATE-BUCKET-NAME with your actual S3 bucket name
+#     bucket = "s3bucket-for-statefile"
+#     # Use the static key path for the networking state file
+#     key    = "infra/networking/terraform.tfstate"
+#     region = "us-east-1"
+#   }
+# }
