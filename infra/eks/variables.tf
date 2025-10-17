@@ -8,6 +8,10 @@ variable "vpc_id" {
 variable "private_subnet_ids" {
   description = "List of private subnet IDs for EKS worker nodes."
   type        = list(string)
+  default = [
+    "subnet-08478509218fc5af5", # private-subnet-1
+    "subnet-0b5d87fa856510826"  # private-subnet-2
+  ]
 }
 
 # --- EKS Configuration Variables ---
@@ -17,7 +21,7 @@ variable "region" {
   type        = string
 }
 
-variable "cluster_name" {
+variable "EKS-plane" {
   description = "Name of the EKS cluster."
   type        = string
 }
